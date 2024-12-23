@@ -1,0 +1,42 @@
+---
+title: "data_cleaner"
+author: "Hardik Gupta"
+date: "2024-05-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE}
+
+data <- read.csv("preqin_buyout_vc.csv")
+
+clean_data <- data[, c("DEAL.DATE", "TARGET.COMPANY.ID", "DEAL.TYPES", "PRIMARY.INDUSTRY", "INVESTORS")]
+
+
+clean_data[clean_data == ""] <- NA
+
+clean_data <- clean_data[complete.cases(clean_data), ]
+
+clean_data <- clean_data[order(clean_data$TARGET.COMPANY.ID), ]
+
+```
+
+
+```{r}
+
+# List of startup investment rounds
+startup_rounds <- c("Seed", "Series A", "Series B", "Series C", "Series D", 
+                    "Series E", "Series F", "Series G", "Series H", "Series I", 
+                    "Series J", "Series K", "Series L", "Pre-IPO", "Venture Debt")
+
+# Filter clean_data to keep only rows where DEAL.TYPES are in startup_rounds
+clean_data <- clean_data[clean_data$DEAL.TYPES %in% startup_rounds, ]
+
+
+# Displaying unique values after filtering
+write.csv(clean_data, "clean_data.csv")
+
+```
