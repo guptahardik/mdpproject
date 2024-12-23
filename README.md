@@ -29,14 +29,40 @@ The project addresses the conservative nature of new angel investors in India's 
 4. Rewards: Based on investment costs, holding costs, and exit rewards
 
 ## Usage
+
+The main script for this project is `answer.py`. This script defines the Markov Decision Process (MDP) model and calculates the optimal investment policy using backward induction.
+
 Input parameters:
 - Investment Amount
 - Startup Stage
 - Investment Duration
 - Industry Preference
+  
 
 Output:
 - Optimal policy indicating the best action (Invest, Hold, Exit) for each state over the specified time horizon
+
+### Key Components of answer.py:
+1. **MDP Definition Function**: This function sets up the MDP model using the provided parameters:
+- `data_file`: CSV file containing cleaned historical data
+- `T`: Time horizon for the investment (in years)
+- `investment_amount`: Initial investment amount
+- `rate`: Interest rate for calculating holding costs
+- `industry`: Specific industry for the investment analysis
+
+2. **Backward Induction**: 
+The script uses a recursive backward induction algorithm to solve the MDP and determine the optimal policy.
+
+3. **Output**: 
+The script prints the optimal policy matrix, indicating the best action (Invest, Hold, Exit) for each state over the specified time horizon.
+
+### Example Usage
+P, r, rterm = define_MDP('clean_data.csv', T=4, investment_amount=10000, rate=0.03, industry="Software")
+_, pi = backward_induction_recursive(P, r, rterm, discount=0.90)
+print(pi)
+
+This will output the optimal policy matrix for a 4-year investment horizon in the software industry, with an initial investment of $10,000 and a 3% interest rate.
+
 
 ## Future Extensions
 - Incorporate more sophisticated reward functions
@@ -45,7 +71,8 @@ Output:
 
 ## Dependencies
 - Python (version X.X)
-- [List any additional libraries or frameworks used]
+- pandas
+- numpy
 
 ## Data Source
 Historical data obtained from Preqin (https://www.preqin.com/)
@@ -53,9 +80,7 @@ Historical data obtained from Preqin (https://www.preqin.com/)
 ## Author
 Hardik Gupta
 
-## License
-[Specify the license under which this project is released]
 
 ## Acknowledgements
 - Dartmouth Library for providing access to Preqin data
-- [Any other acknowledgements or credits]
+- ChatGPT-4 for assistance with code cleaning and transitional probability logic
